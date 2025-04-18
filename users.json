@@ -1,0 +1,21 @@
+[
+    {
+      "id": "123456782",
+      "name": "Roei",
+      "phone": "0501234567",
+      "address": "Tel Aviv"
+    },
+    {
+      "id": "123456780",
+      "name": "Gal",
+      "phone": "0527654321",
+      "address": "Haifa"
+    },
+    {
+      "id": "234567892",
+      "name": "Sara",
+      "phone": "0539876543",
+      "address": "Jerusalem"
+    }
+  ]
+  

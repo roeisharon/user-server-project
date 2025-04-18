@@ -1,0 +1,63 @@
+import pytest
+from server import app, users_map
+from user import User
+
+# clear the user map before every test
+@pytest.fixture(autouse=True)
+def clear_users_map():
+    users_map.clear()
+
+# Flask test client fixture
+@pytest.fixture
+def client():
+    app.config['TESTING'] = True
+    with app.test_client() as client:
+        yield client
+
+#Test 1: GET /users/<name> - case insensitive match
+def test_get_user_by_name_case_insensitive(client):
+    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv")
+    response = client.get('/users/ROEI')  # intentionally uppercase
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data['name'] == "Roei"
+    assert data['phone'] == "0501234567"
+
+#Test 2: GET /users - base route
+def test_get_users(client):
+    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv")
+    response = client.get('/users')
+    assert response.status_code == 200
+    assert "Roei" in response.get_json()
+
+# Test 3: POST /users - covers edge cases
+@pytest.mark.parametrize("payload, expected_status, expected_error", [
+    # Missing field
+    ({"id": "123456782", "name": "NoPhone", "address": "MissingPhone"}, 400, None),
+    #Invalid ID
+    ({"id": "12345", "name": "BadID", "phone": "0501234567", "address": "ShortTown"}, 400, "Invalid ID"),
+    # Invalid phone
+    ({"id": "123456782", "name": "BadPhone", "phone": "0591234567", "address": "NoReception"}, 400, "Invalid phone number"),
+    #Valid user
+    ({"id": "123456782", "name": "Tester123", "phone": "0531234567", "address": "TestCity"}, 201, None),
+])
+def test_post_user_variants(client, payload, expected_status, expected_error):
+    response = client.post('/users', json=payload)
+    assert response.status_code == expected_status
+    data = response.get_json()
+    if expected_error:
+        assert expected_error in data['error']
+    elif expected_status == 201:
+        assert 'name' in data and 'phone' in data
+
+def test_post_user_duplicate_id(client):
+    users_map['123456782'] = User("123456782", "Original", "0501234567", "Tel Aviv")
+    response = client.post('/users', json={
+        "id": "123456782",
+        "name": "Duplicate",
+        "phone": "0539876543",
+        "address": "ClashCity"
+    })
+    assert response.status_code == 400
+    assert "already exists" in response.get_json()['error']
+
