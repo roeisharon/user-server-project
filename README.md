@@ -2,7 +2,7 @@
 
 ## 📌 Project Summary
 
-This project is a RESTful web server built with Python and Flask. It manages user data including name, phone number, ID, and address. The server reads from a JSON file at startup and allows access via RESTful API endpoints for retrieving or creating users. It validates Israeli IDs and phone numbers, persists new valid users to the file, and handles bad input or duplicates with clear error messages. A robust test suite built with pytest ensures reliable behavior and edge-case handling. The code is documented, tested, and ready to run on any Linux/macOS/Windows environment.
+This project is a RESTful web server built with Python and Flask. It manages user data including name, phone number, ID, and address. The server reads from a JSON file at startup and allows access via RESTful API endpoints for retrieving or creating users. The JSON file acts as a lightweight alternative to a traditional database, enabling simple data persistence without external dependencies. It validates Israeli IDs and phone numbers, persists new valid users to the file, and handles bad input or duplicates with clear error messages. A robust test suite built with pytest ensures reliable behavior and edge-case handling. The code is documented, tested, and ready to run on any Linux/macOS/Windows environment.
 
 A simple RESTful server written in Python using Flask. It manages user data (ID, phone number, name, and address), validates the data, stores it in memory, and persists new users to a JSON file.
 
