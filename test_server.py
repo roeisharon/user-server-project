@@ -30,7 +30,7 @@ def test_get_user_by_name_case_insensitive(client):
     """
     Verifies that user lookup is case-insensitive.
     """
-    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv") #manually inject a user 
+    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv") #manually insert a user 
     response = client.get('/users/ROEI')  # intentionally uppercase
     assert response.status_code == 200
     data = response.get_json()
@@ -42,7 +42,7 @@ def test_get_users(client):
     """
     Verifies that GET /users returns a list of usernames.
     """
-    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv") #manually inject a user
+    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv") #manually insert a user
     response = client.get('/users')
     assert response.status_code == 200
     assert "Roei" in response.get_json()

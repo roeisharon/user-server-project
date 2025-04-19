@@ -1,14 +1,12 @@
-# 📃 User Server Project
+# User Server Project
 
-## 📌 Project Summary
+## Project Summary
 
-This project is a RESTful web server built with Python and Flask. It manages user data including name, phone number, ID, and address. The server reads from a JSON file at startup and allows access via RESTful API endpoints for retrieving or creating users. The JSON file acts as a lightweight alternative to a traditional database, enabling simple data persistence without external dependencies. It validates Israeli IDs and phone numbers, persists new valid users to the file, and handles bad input or duplicates with clear error messages. A robust test suite built with pytest ensures reliable behavior and edge-case handling. The code is documented, tested, and ready to run on any Linux/macOS/Windows environment.
-
-A simple RESTful server written in Python using Flask. It manages user data (ID, phone number, name, and address), validates the data, stores it in memory, and persists new users to a JSON file.
+This project is a RESTful web server built with Python and Flask. It manages user data including name, phone number, ID, and address. The server reads from a JSON file at startup and allows access via RESTful API endpoints for retrieving or creating users. The JSON file acts as a lightweight alternative to a traditional database, enabling simple data persistence without external dependencies. It validates Israeli IDs and phone numbers, persists new valid users to the file, and handles bad input or duplicates with clear error messages. A test suite built with pytest ensures reliable behavior and edge-case handling. The code is documented, tested, and ready to run on any Linux/macOS/Windows environment.
 
 ---
 
-## ✅ Features
+## Features
 
 - Load user data from a JSON file
 - Validate Israeli ID numbers and phone numbers
@@ -22,7 +20,7 @@ A simple RESTful server written in Python using Flask. It manages user data (ID,
 
 ---
 
-## 🚀 How to Run the Server (Linux)
+## How to Run the Server (Linux)
 
 ### Install Dependencies Automatically
 After cloning the project and activating the virtual environment, you can install all required packages with:
@@ -76,7 +74,7 @@ curl -X POST http://localhost:5000/users \
 
 ---
 
-## 💡 How to Run the Tests
+## How to Run the Tests
 ```bash
 pytest test_server.py
 ```
@@ -89,7 +87,7 @@ test_server.py .......                        [100%]
 
 ---
 
-## 📁 File Structure
+## File Structure
 ```
 user_server_project/
 ├── server.py          # Main Flask server
@@ -103,12 +101,7 @@ user_server_project/
 
 ---
 
-## 🤝 Author
-Roei Sharon
-
----
-
-## ✨ Notes
+## Notes
 - All new users are validated and then saved to `users.json`
 - If `users.json` is missing, the server starts with an empty map
 

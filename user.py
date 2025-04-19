@@ -2,21 +2,15 @@ class User:
     """
     Represents a single user in the system.
     Attributes:
-        id (str): Israeli ID number of the user (validated externally).
+        id (str): Israeli ID number of the user 
         name (str): Full name of the user.
-        phone (str): Phone number in Israeli format.
-        address (str): Residential or contact address.
+        phone (str): Valid Israeli phone number.
+        address (str): Contact address.
     """
 
     def __init__(self, id, name, phone, address):
         """
         Initializes a User instance with the given attributes.
-
-        Args:
-            id (str): Israeli ID number.
-            name (str): User's name.
-            phone (str): User's phone number.
-            address (str): User's address.
         """
         self.id = id
         self.name = name
@@ -29,7 +23,7 @@ class User:
 
         Returns:
             dict: A dictionary representation of the user,
-                  suitable for JSON serialization or API response.
+                  suitable for JSON or API response.
         """
         return {
             "id": self.id,

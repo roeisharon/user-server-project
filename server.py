@@ -125,7 +125,7 @@ def save_users_to_file(fileName):
     Writes the current users_map into a JSON file.
 
     This serves as a lightweight alternative to a database.
-    It allows the application to persist data across sessions
+    It allows the application to handle data across sessions
     without requiring an external DB system.
 
     Args:
