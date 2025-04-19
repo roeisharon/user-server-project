@@ -1,4 +1,5 @@
 import pytest
+import json
 from server import app, users_map
 from user import User
 
@@ -16,7 +17,7 @@ def client():
 
 #Test 1: GET /users/<name> - case insensitive match
 def test_get_user_by_name_case_insensitive(client):
-    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv")
+    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv") #manually inject a user 
     response = client.get('/users/ROEI')  # intentionally uppercase
     assert response.status_code == 200
     data = response.get_json()
@@ -25,15 +26,16 @@ def test_get_user_by_name_case_insensitive(client):
 
 #Test 2: GET /users - base route
 def test_get_users(client):
-    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv")
+    users_map['123456782'] = User("123456782", "Roei", "0501234567", "Tel Aviv") #manually inject a user
     response = client.get('/users')
     assert response.status_code == 200
     assert "Roei" in response.get_json()
 
 # Test 3: POST /users - covers edge cases
+# Parametrize the test with different payloads each time
 @pytest.mark.parametrize("payload, expected_status, expected_error", [
     # Missing field
-    ({"id": "123456782", "name": "NoPhone", "address": "MissingPhone"}, 400, None),
+    ({"id": "123456782", "name": "NoPhone", "address": "MissingPhone"}, 400, "Missing field: phone"),
     #Invalid ID
     ({"id": "12345", "name": "BadID", "phone": "0501234567", "address": "ShortTown"}, 400, "Invalid ID"),
     # Invalid phone
@@ -49,9 +51,15 @@ def test_post_user_variants(client, payload, expected_status, expected_error):
         assert expected_error in data['error']
     elif expected_status == 201:
         assert 'name' in data and 'phone' in data
-
+        #check that user is saved to users.json
+        with open('users.json', 'r') as file:
+            saved_data = json.load(file)
+            # Look for this user in the saved file
+            assert any(user['id'] == payload['id'] for user in saved_data)
+    
+# Test 4: POST /users - duplicate ID
 def test_post_user_duplicate_id(client):
-    users_map['123456782'] = User("123456782", "Original", "0501234567", "Tel Aviv")
+    users_map['123456782'] = User("123456782", "Original", "0501234567", "Tel Aviv") #manually inject a user
     response = client.post('/users', json={
         "id": "123456782",
         "name": "Duplicate",

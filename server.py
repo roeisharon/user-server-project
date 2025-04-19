@@ -46,9 +46,13 @@ def get_user_by_name(name):
 
 @app.route('/users', methods=['POST'])
 def create_user():
-    data = request.get_json()
+    try:
+        data = request.get_json()
+        if data is None:
+            raise ValueError("Empty or invalid JSON")
+    except Exception:
+        return jsonify({"error": "Invalid JSON input"}), 400
 
-    # ✅ Check for missing required fields first
     required_fields = ['id', 'name', 'phone', 'address']
     for field in required_fields:
         if not data.get(field):
@@ -69,7 +73,16 @@ def create_user():
 
     user = User(id, name, phone, address)
     users_map[id] = user
+    
+    save_users_to_file('users.json')
+    print(f"User {name} with ID {id} added successfully.")
+    
     return jsonify(user.to_dict()), 201
+
+def save_users_to_file(fileName):
+    data = [user.to_dict() for user in users_map.values()]
+    with open(fileName, 'w') as file:
+        json.dump(data, file, indent=4)
 
 
 if __name__ == '__main__':
